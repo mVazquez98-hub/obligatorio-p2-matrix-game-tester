@@ -1,6 +1,7 @@
 package obligatorio;
 
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Sistema {
@@ -59,20 +60,97 @@ public class Sistema {
     }
 
     public void registrarTester() {
+        String nombre = "";
+        boolean nombreValido = false;
+        int edad = 0;
+        boolean edadValida = false;
+        int aniosExperiencia = 0;
+        boolean experienciaValida = false;
+
+        System.out.println();
+        System.out.println("=== Registrar tester ===");
+
+        while (!nombreValido) {
+            System.out.print("Ingrese nombre: ");
+            nombre = in.nextLine();
+            if (nombre.equals("")) {
+                System.out.println("El nombre no puede estar vacío.");
+            } else if (existeTester(nombre)) {
+                System.out.println("Ya existe un tester con ese nombre.");
+            } else {
+                nombreValido = true;
+            }
+        }
+
+        while (!edadValida) {
+            try {
+                System.out.print("Ingrese edad: ");
+                edad = in.nextInt();
+                in.nextLine();
+                if (edad > 0) {
+                    edadValida = true;
+                } else {
+                    System.out.println("La edad debe ser mayor a 0.");
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("La edad debe ser un número.");
+                in.nextLine();
+
+            }
+        }
+        while (!experienciaValida) {
+            try {
+                System.out.print("Ingrese años de experiencia: ");
+                aniosExperiencia = in.nextInt();
+                in.nextLine();
+                if (aniosExperiencia < 0) {
+                    System.out.println("Los años de experiencia no pueden ser negativos.");
+                } else if (aniosExperiencia >= edad) {
+                    System.out.println("Los años de experiencia deben ser menores a la edad.");
+                } else {
+                    experienciaValida = true;
+                }
+
+            } catch (InputMismatchException e) {
+                System.out.println("Los años de experiencia deben ser un número.");
+                in.nextLine();
+
+            }
+
+        }
+        System.out.println("Nombre: " + nombre + " - edad: " + edad + " - Años de experiencia: " + aniosExperiencia);
+        Tester nuevoTester = new Tester(nombre, edad, aniosExperiencia);
+        testers.add(nuevoTester);
+        System.out.println("Tester registrado correctamente.");
 
     }
-    public void registrarMatrizActual(){
-        
-    }
-    public void registrarTesteo(){
-        
-    }
-    public void consultarTesters(){
-        
-    }
-    public void mostrarEstadisticas(){
-        
+
+    public void registrarMatrizActual() {
+
     }
 
+    public void registrarTesteo() {
+
+    }
+
+    public void consultarTesters() {
+
+    }
+
+    public void mostrarEstadisticas() {
+
+    }
+
+    private boolean existeTester(String nombre) {
+        boolean existe = false;
+
+        for (int i = 0; i < testers.size() && !existe; i++) {
+            if (nombre.equalsIgnoreCase(testers.get(i).getNombre())) {
+                existe = true;
+            }
+        }
+
+        return existe;
+    }
 
 }
