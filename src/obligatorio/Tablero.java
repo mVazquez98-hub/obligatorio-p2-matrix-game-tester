@@ -2,12 +2,12 @@ package obligatorio;
 
 public class Tablero {
 
-    private static final int FILAS = 8;
-    private static final int COLUMNAS = 10;
+    private static final int filas = 8;
+    private static final int columnas = 10;
     private String[][] matriz;
 
     public Tablero() {
-        matriz = new String[FILAS][COLUMNAS];
+        this.matriz = new String[filas][columnas];
         cargarMatrizPorDefecto();
     }
 
@@ -16,6 +16,38 @@ public class Tablero {
     }
 
     public void cargarMatrizPorDefecto() {
+        String[] filas = {
+            "VVNNVVNNVV",
+            "NNNNNNNNNN",
+            "NNNVVNNVNN",
+            "VVVVVVVVVV",
+            "VVVVVVVVVV",
+            "BBBVVBBVBB",
+            "BBBBBBBBBB",
+            "VVBBVVBBVV"
+        };
+        for (int i = 0; i < filas.length; i++) {
+            for (int j = 0; j < filas[0].length(); j++) {
+                String valor = "" + filas[i].charAt(j);
+                matriz[i][j] = valor;
+
+            }
+        }
+
+    }
+
+    public String prepararTablero() {
+        String tablero = "";
+        for (int i = 0; i < filas; i++) {
+            tablero += "+---+---+---+---+---+---+---+---+---+---+\n";
+            for (int j = 0; j < columnas; j++) {
+                tablero += "| " + matriz[i][j] + " ";
+            }
+            tablero += "|\n";
+        }
+        tablero += "+---+---+---+---+---+---+---+---+---+---+\n";
+
+        return tablero;
 
     }
 
@@ -37,10 +69,6 @@ public class Tablero {
 
     public boolean validarMovimientoEnGrupo(String color, String forma, String sentido, int fila, int columna, int tamanio, int pasos) {
         return false;
-    }
-
-    public String prepararTablero() {
-        return "";
     }
 
     public boolean verificarConexion(String color) {

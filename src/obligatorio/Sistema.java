@@ -126,6 +126,9 @@ public class Sistema {
     }
 
     public void registrarMatrizActual() {
+        System.out.println();
+        System.out.println("=== Registrar matriz actual ===");
+        System.out.println(tablero.prepararTablero());
 
     }
 
