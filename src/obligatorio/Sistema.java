@@ -128,7 +128,46 @@ public class Sistema {
     public void registrarMatrizActual() {
         System.out.println();
         System.out.println("=== Registrar matriz actual ===");
+        System.out.println("Matriz actual:");
         System.out.println(tablero.prepararTablero());
+        System.out.println("Si desea continuar con la matriz actual, presione S");
+        System.out.println("De lo contrario, presione N");
+        String respuesta = in.nextLine();
+        if (respuesta.equalsIgnoreCase("S")) {
+            System.out.println("Matriz actual:");
+            System.out.println(tablero.prepararTablero());
+        } else if (respuesta.equalsIgnoreCase("N")) {
+            System.out.println("A - Cargar matriz por defecto");
+            System.out.println("B - Cargar matriz manualmente");
+            System.out.print("Ingrese opción: ");
+            String opcion = in.nextLine();
+            if (opcion.equalsIgnoreCase("A")) {
+                tablero.cargarMatrizPorDefecto();
+                System.out.println("Matriz por defecto: ");
+                System.out.println(tablero.prepararTablero());
+            } else if (opcion.equalsIgnoreCase("B")) {
+                boolean cargada = false;
+                while (!cargada) {
+                    String[] filasIngresadas = new String[8];
+                    for (int i = 0; i < filasIngresadas.length; i++) {
+                        System.out.print("Ingrese fila " + (i + 1) + ": ");
+                        filasIngresadas[i] = in.nextLine();
+                    }
+                    cargada = tablero.cargarMatriz(filasIngresadas);
+                    if (!cargada) {
+                        System.out.println("La matriz ingresada no es válida.");
+                        System.out.println("Ingrese la matriz nuevamente.");
+                    }
+
+                }
+                System.out.println("Matriz cargada correctamente.");
+                System.out.println(tablero.prepararTablero());
+
+            } else {
+                System.out.println("Opción inválida");
+            }
+
+        }
 
     }
 

@@ -16,7 +16,7 @@ public class Tablero {
     }
 
     public void cargarMatrizPorDefecto() {
-        String[] filas = {
+        String[] filasPorDefecto = {
             "VVNNVVNNVV",
             "NNNNNNNNNN",
             "NNNVVNNVNN",
@@ -26,9 +26,9 @@ public class Tablero {
             "BBBBBBBBBB",
             "VVBBVVBBVV"
         };
-        for (int i = 0; i < filas.length; i++) {
-            for (int j = 0; j < filas[0].length(); j++) {
-                String valor = "" + filas[i].charAt(j);
+        for (int i = 0; i < filasPorDefecto.length; i++) {
+            for (int j = 0; j < filasPorDefecto[0].length(); j++) {
+                String valor = "" + filasPorDefecto[i].charAt(j);
                 matriz[i][j] = valor;
 
             }
@@ -52,7 +52,42 @@ public class Tablero {
     }
 
     public boolean cargarMatriz(String[] filasIngresadas) {
-        return false;
+        boolean cargada = false;
+        if (matrizValida(filasIngresadas)) {
+            for (int i = 0; i < filas; i++) {
+                for (int j = 0; j < columnas; j++) {
+                    String valor = "" + filasIngresadas[i].charAt(j);
+                    matriz[i][j] = valor.toUpperCase();
+
+                }
+            }
+
+        }
+        return cargada;
+    }
+
+    private boolean matrizValida(String[] filasIngresadas) {
+        boolean valida = true;
+        if (filasIngresadas.length != filas) {
+            valida = false;
+        }
+
+        for (int i = 0; i < filasIngresadas.length && valida; i++) {
+            if (filasIngresadas[i].length() != columnas) {
+                valida = false;
+            } else {
+                for (int j = 0; j < columnas && valida; j++) {
+                    String valor = "" + filasIngresadas[i].charAt(j);
+                    String valorMayus = valor.toUpperCase();
+                    if (!valorMayus.equalsIgnoreCase("B") && !valorMayus.equalsIgnoreCase("N") && !valorMayus.equalsIgnoreCase("V")) {
+                        valida = false;
+                    }
+                }
+            }
+
+        }
+        return valida;
+
     }
 
     public String[][] copiarMatriz() {
