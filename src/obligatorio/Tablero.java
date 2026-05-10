@@ -61,6 +61,7 @@ public class Tablero {
 
                 }
             }
+            cargada = true;
 
         }
         return cargada;
@@ -95,7 +96,14 @@ public class Tablero {
     }
 
     public int contarFichas(String color) {
-        return 0;
+        int contador = 0;
+        for(int i = 0; i < matriz.length; i++){
+            for(int j = 0; j < matriz[0].length; j++){
+                if(matriz[i][j].equalsIgnoreCase(color)){
+                    contador++;
+                }
+            }
+        }return contador;
     }
 
     public boolean validarMovimientoIndividual(String color, String sentido, int fila, int columna, int pasos) {

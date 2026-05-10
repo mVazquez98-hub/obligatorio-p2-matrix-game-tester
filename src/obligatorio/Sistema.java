@@ -172,8 +172,73 @@ public class Sistema {
     }
 
     public void registrarTesteo() {
+        System.out.println();
+        System.out.println("=== Registrar testeo ===");
+        if(testers.isEmpty()){
+            System.out.println("No hay testers registrados");
+        }else{
+            Tester testerSeleccionado = elegirTester();
+            int caso = elegirCaso();
+            System.out.println("Tester seleccionado: " + testerSeleccionado.getNombre());
+            System.out.println("Caso seleccionado: " + caso);
+        }
 
     }
+
+    private Tester elegirTester() {
+        int opcion = 0;
+        Tester seleccionado = null;
+        while (seleccionado == null) {
+            for (int i = 0; i < testers.size(); i++) {
+                System.out.println((i + 1) + " - " + testers.get(i).getNombre());
+            }
+            try {
+                System.out.println("Ingrese número de tester");
+                opcion = in.nextInt();
+                in.nextLine();
+                if (opcion < 1 || opcion > testers.size()) {
+                    System.out.println("Opcion fuera de rango, vuelva a ingresar");
+
+                } else {
+                    seleccionado = testers.get(opcion - 1);
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Ingrese un valor válido");
+                in.nextLine();
+
+            }
+
+        }
+
+        return seleccionado;
+    }
+
+    private int elegirCaso() {
+        int caso = 0;
+        System.out.println("Casos disponibles:");
+        System.out.println("1 - Contar fichas");
+        System.out.println("2 - Validar movimiento individual");
+        System.out.println("3 - Validar movimiento en grupo");
+        System.out.println("4 - Mostrar tablero");
+        System.out.println("5 - Verificar conexión");
+
+        while (!(caso <= 5 && caso > 0)) {
+            try {
+                System.out.println("Ingrese un valor entre 1 y 5");
+                caso = in.nextInt();
+                in.nextLine();
+                if(caso < 1 || caso > 5){
+                    System.out.println("Opción fuera de rango");
+                }
+
+            } catch (InputMismatchException e) {
+                System.out.println("Ingrese un número válido");
+                in.nextLine();
+            }
+        }
+        return caso;
+    }
+    
 
     public void consultarTesters() {
 
