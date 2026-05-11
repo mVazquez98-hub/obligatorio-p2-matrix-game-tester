@@ -92,18 +92,25 @@ public class Tablero {
     }
 
     public String[][] copiarMatriz() {
-        return null;
+        String[][] copiaMatriz = new String[filas][columnas];
+        for (int i = 0; i < copiaMatriz.length; i++) {
+            for (int j = 0; j < copiaMatriz[0].length; j++) {
+                copiaMatriz[i][j] = matriz[i][j];
+            }
+        }
+        return copiaMatriz;
     }
 
     public int contarFichas(String color) {
         int contador = 0;
-        for(int i = 0; i < matriz.length; i++){
-            for(int j = 0; j < matriz[0].length; j++){
-                if(matriz[i][j].equalsIgnoreCase(color)){
+        for (int i = 0; i < matriz.length; i++) {
+            for (int j = 0; j < matriz[0].length; j++) {
+                if (matriz[i][j].equalsIgnoreCase(color)) {
                     contador++;
                 }
             }
-        }return contador;
+        }
+        return contador;
     }
 
     public boolean validarMovimientoIndividual(String color, String sentido, int fila, int columna, int pasos) {

@@ -174,19 +174,45 @@ public class Sistema {
     public void registrarTesteo() {
         System.out.println();
         System.out.println("=== Registrar testeo ===");
-        if(testers.isEmpty()){
+        String resultado = "";
+        String parametros = "";
+        String[][] matrizOriginal = tablero.copiarMatriz();
+        String[][] matrizResultado = new String[matrizOriginal.length][matrizOriginal[0].length];
+        String comentario = "";
+        int numero = 0;
+        if (testers.isEmpty()) {
             System.out.println("No hay testers registrados");
-        }else{
+        } else {
             Tester testerSeleccionado = elegirTester();
             int caso = elegirCaso();
             System.out.println("Tester seleccionado: " + testerSeleccionado.getNombre());
             System.out.println("Caso seleccionado: " + caso);
+
+            if (caso == 1) {
+                String color = "";
+                while (!color.equalsIgnoreCase("B") && !color.equalsIgnoreCase("N")) {
+                    System.out.println("Elija un color entre B o N");
+                    color = in.nextLine();
+                }
+                matrizResultado = tablero.copiarMatriz();
+                int cantidad = tablero.contarFichas(color);
+                parametros = "Color: " + color;
+                resultado = "Cantidad de fichas " + color + ": " + cantidad;
+
+            }
+            System.out.println("Ingrese un comentario para registrar Testeo");
+            comentario = in.nextLine();
+            numero = testeos.size() + 1;
+            Testeo nuevoTesteo = new Testeo(numero, caso, testerSeleccionado, parametros, comentario, resultado, matrizOriginal, matrizResultado);
+            testeos.add(nuevoTesteo);
+            testerSeleccionado.agregarTesteo(nuevoTesteo);
+            System.out.println(resultado);
+            System.out.println("Testeo registrado con exito");
         }
 
     }
 
     private Tester elegirTester() {
-        int opcion = 0;
         Tester seleccionado = null;
         while (seleccionado == null) {
             for (int i = 0; i < testers.size(); i++) {
@@ -194,7 +220,7 @@ public class Sistema {
             }
             try {
                 System.out.println("Ingrese número de tester");
-                opcion = in.nextInt();
+                int opcion = in.nextInt();
                 in.nextLine();
                 if (opcion < 1 || opcion > testers.size()) {
                     System.out.println("Opcion fuera de rango, vuelva a ingresar");
@@ -227,7 +253,7 @@ public class Sistema {
                 System.out.println("Ingrese un valor entre 1 y 5");
                 caso = in.nextInt();
                 in.nextLine();
-                if(caso < 1 || caso > 5){
+                if (caso < 1 || caso > 5) {
                     System.out.println("Opción fuera de rango");
                 }
 
@@ -238,7 +264,6 @@ public class Sistema {
         }
         return caso;
     }
-    
 
     public void consultarTesters() {
 
