@@ -114,7 +114,138 @@ public class Tablero {
     }
 
     public boolean validarMovimientoIndividual(String color, String sentido, int fila, int columna, int pasos) {
-        return false;
+        boolean valido = true;
+        int filaDestino = filaDestino(fila, sentido, pasos);
+        int colDestino = columnaDestino(columna, sentido, pasos);
+        if (!color.equalsIgnoreCase("B") && !color.equalsIgnoreCase("N")) {
+            valido = false;
+        } else if (!sentidoPermitido(color, sentido)) {
+            valido = false;
+
+        } else if (pasos <= 0) {
+            valido = false;
+
+        } else if (!posicionValida(fila, columna)) {
+            valido = false;
+        } else if (!matriz[fila][columna].equalsIgnoreCase(color)) {
+            valido = false;
+        } else if (!posicionValida(filaDestino, colDestino)) {
+            valido = false;
+        } else if (!caminoLibre(fila, columna, sentido, pasos)) {
+            valido = false;
+        } else if (!destinoValido(filaDestino, colDestino, color)) {
+            valido = false;
+        }
+        if (valido) {
+            moverFicha(fila, columna, filaDestino, colDestino, color);
+        }
+        return valido;
+
+    }
+
+    private boolean posicionValida(int fila, int columna) {
+        boolean valida = true;
+        if (fila < 0 || fila >= filas || columna >= columnas || columna < 0) {
+            valida = false;
+        }
+
+        return valida;
+    }
+
+    private boolean sentidoPermitido(String color, String sentido) {
+        boolean permitido = false;
+        if (color.equalsIgnoreCase("B")) {
+            if (sentido.equalsIgnoreCase("N")
+                    || sentido.equalsIgnoreCase("NE")
+                    || sentido.equalsIgnoreCase("NO")
+                    || sentido.equalsIgnoreCase("E")
+                    || sentido.equalsIgnoreCase("O")) {
+                permitido = true;
+            }
+        } else if (color.equalsIgnoreCase("N")) {
+            if (sentido.equalsIgnoreCase("S")
+                    || sentido.equalsIgnoreCase("SE")
+                    || sentido.equalsIgnoreCase("SO")
+                    || sentido.equalsIgnoreCase("E")
+                    || sentido.equalsIgnoreCase("O")) {
+                permitido = true;
+
+            }
+        }
+        return permitido;
+
+    }
+
+    private int cambioFila(String sentido) {
+        int cambio = 0;
+        if (sentido.equalsIgnoreCase("N")
+                || sentido.equalsIgnoreCase("NE")
+                || sentido.equalsIgnoreCase("NO")) {
+            cambio = -1;
+        } else if (sentido.equalsIgnoreCase("S")
+                || sentido.equalsIgnoreCase("SE")
+                || sentido.equalsIgnoreCase("SO")) {
+            cambio = 1;
+        }
+        return cambio;
+    }
+
+    private int cambioColumna(String sentido) {
+        int cambio = 0;
+        if (sentido.equalsIgnoreCase("E")
+                || sentido.equalsIgnoreCase("NE")
+                || sentido.equalsIgnoreCase("SE")) {
+            cambio = 1;
+        } else if (sentido.equalsIgnoreCase("O")
+                || sentido.equalsIgnoreCase("NO")
+                || sentido.equalsIgnoreCase("SO")) {
+            cambio = -1;
+
+        }
+        return cambio;
+
+    }
+
+    private int filaDestino(int fila, String sentido, int pasos) {
+        int filaDestino = fila + cambioFila(sentido) * pasos;
+        return filaDestino;
+    }
+
+    private int columnaDestino(int columna, String sentido, int pasos) {
+        int columnaDestino = columna + cambioColumna(sentido) * pasos;
+        return columnaDestino;
+    }
+
+    private boolean caminoLibre(int fila, int columna, String sentido, int pasos) {
+        boolean libre = true;
+        int cambioFila = cambioFila(sentido);
+        int cambioColumna = cambioColumna(sentido);
+        for (int i = 1; i < pasos && libre; i++) {
+            int filaActual = fila + cambioFila * i;
+            int columnaActual = columna + cambioColumna * i;
+            if (!posicionValida(filaActual, columnaActual)) {
+                libre = false;
+            } else if (!matriz[filaActual][columnaActual].equalsIgnoreCase("V")) {
+                libre = false;
+            }
+        }
+
+        return libre;
+    }
+
+    private boolean destinoValido(int filaDestino, int colDestino, String color) {
+        boolean valido = true;
+        if (!posicionValida(filaDestino, colDestino)) {
+            valido = false;
+        } else if (matriz[filaDestino][colDestino].equalsIgnoreCase(color)) {
+            valido = false;
+        }
+        return valido;
+    }
+
+    private void moverFicha(int fila, int columna, int filaDestino, int columnaDestino, String color) {
+        matriz[fila][columna] = "V";
+        matriz[filaDestino][columnaDestino] = color.toUpperCase();
     }
 
     public boolean validarMovimientoEnGrupo(String color, String forma, String sentido, int fila, int columna, int tamanio, int pasos) {

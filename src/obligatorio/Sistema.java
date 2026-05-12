@@ -194,10 +194,78 @@ public class Sistema {
                     System.out.println("Elija un color entre B o N");
                     color = in.nextLine();
                 }
-                matrizResultado = tablero.copiarMatriz();
+                matrizOriginal = tablero.copiarMatriz();
                 int cantidad = tablero.contarFichas(color);
+                matrizResultado = tablero.copiarMatriz();
                 parametros = "Color: " + color;
                 resultado = "Cantidad de fichas " + color + ": " + cantidad;
+
+            }
+            if (caso == 2) {
+                String color = "";
+                String sentido = "";
+                int fila = 0;
+                int columna = 0;
+                int pasos = 0;
+                while (!color.equalsIgnoreCase("B") && !color.equalsIgnoreCase("N")) {
+                    System.out.println("Elija un color entre B o N");
+                    color = in.nextLine();
+                }
+                while (!sentido.equalsIgnoreCase("N")
+                        && !sentido.equalsIgnoreCase("S")
+                        && !sentido.equalsIgnoreCase("E")
+                        && !sentido.equalsIgnoreCase("O")
+                        && !sentido.equalsIgnoreCase("NE")
+                        && !sentido.equalsIgnoreCase("NO")
+                        && !sentido.equalsIgnoreCase("SE")
+                        && !sentido.equalsIgnoreCase("SO")) {
+
+                    System.out.println("Elija un sentido");
+                    System.out.println("Opciones: N - S - E - O - NE - NO - SE - SO");
+                    sentido = in.nextLine();
+                }
+                boolean filaValida = false;
+                while (!filaValida) {
+                    try {
+                        System.out.println("Ingrese fila: ");
+                        fila = in.nextInt();
+                        in.nextLine();
+                        filaValida = true;
+                    } catch (InputMismatchException e) {
+                        System.out.println("La fila debe ser un numero");
+                        in.nextLine();
+                    }
+                }
+                boolean colValida = false;
+                while (!colValida) {
+                    try {
+                        System.out.println("Ingrese columna: ");
+                        columna = in.nextInt();
+                        in.nextLine();
+                        colValida = true;
+                    } catch (InputMismatchException e) {
+                        System.out.println("La columna debe ser un numero");
+                        in.nextLine();
+                    }
+                }
+                boolean pasosValidos = false;
+                while (!pasosValidos) {
+                    try {
+                        System.out.println("Ingrese cantidad de pasos: ");
+                        pasos = in.nextInt();
+                        in.nextLine();
+                        pasosValidos = true;
+                    } catch (InputMismatchException e) {
+                        System.out.println("Los pasos deben ser un número");
+                        in.nextLine();
+                    }
+                }
+                matrizOriginal = tablero.copiarMatriz();
+                boolean ok = tablero.validarMovimientoIndividual(color, sentido, fila, columna, pasos);
+                matrizResultado = tablero.copiarMatriz();
+                parametros = "Color: " + color + ", Sentido: " + sentido + ", fila: " + fila
+                        + ", columna: " + columna + ", pasos: " + pasos;
+                resultado = "Resultado: " + " " + ok;
 
             }
             System.out.println("Ingrese un comentario para registrar Testeo");
