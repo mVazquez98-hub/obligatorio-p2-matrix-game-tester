@@ -1,20 +1,20 @@
 package obligatorio;
 
 public class Tablero {
-    
+
     private static final int filas = 8;
     private static final int columnas = 10;
     private String[][] matriz;
-    
+
     public Tablero() {
         this.matriz = new String[filas][columnas];
         cargarMatrizPorDefecto();
     }
-    
+
     public String[][] getMatriz() {
         return matriz;
     }
-    
+
     public void cargarMatrizPorDefecto() {
         String[] filasPorDefecto = {
             "VVNNVVNNVV",
@@ -30,12 +30,12 @@ public class Tablero {
             for (int j = 0; j < filasPorDefecto[0].length(); j++) {
                 String valor = "" + filasPorDefecto[i].charAt(j);
                 matriz[i][j] = valor;
-                
+
             }
         }
-        
+
     }
-    
+
     public String prepararTablero() {
         String tablero = "";
         for (int i = 0; i < filas; i++) {
@@ -46,11 +46,11 @@ public class Tablero {
             tablero += "|\n";
         }
         tablero += "+---+---+---+---+---+---+---+---+---+---+\n";
-        
+
         return tablero;
-        
+
     }
-    
+
     public boolean cargarMatriz(String[] filasIngresadas) {
         boolean cargada = false;
         if (matrizValida(filasIngresadas)) {
@@ -58,21 +58,21 @@ public class Tablero {
                 for (int j = 0; j < columnas; j++) {
                     String valor = "" + filasIngresadas[i].charAt(j);
                     matriz[i][j] = valor.toUpperCase();
-                    
+
                 }
             }
             cargada = true;
-            
+
         }
         return cargada;
     }
-    
+
     private boolean matrizValida(String[] filasIngresadas) {
         boolean valida = true;
         if (filasIngresadas.length != filas) {
             valida = false;
         }
-        
+
         for (int i = 0; i < filasIngresadas.length && valida; i++) {
             if (filasIngresadas[i].length() != columnas) {
                 valida = false;
@@ -85,12 +85,12 @@ public class Tablero {
                     }
                 }
             }
-            
+
         }
         return valida;
-        
+
     }
-    
+
     public String[][] copiarMatriz() {
         String[][] copiaMatriz = new String[filas][columnas];
         for (int i = 0; i < copiaMatriz.length; i++) {
@@ -100,7 +100,7 @@ public class Tablero {
         }
         return copiaMatriz;
     }
-    
+
     public int contarFichas(String color) {
         int contador = 0;
         for (int i = 0; i < matriz.length; i++) {
@@ -112,7 +112,7 @@ public class Tablero {
         }
         return contador;
     }
-    
+
     public boolean validarMovimientoIndividual(String color, String sentido, int fila, int columna, int pasos) {
         boolean valido = true;
         int filaDestino = filaDestino(fila, sentido, pasos);
@@ -121,10 +121,10 @@ public class Tablero {
             valido = false;
         } else if (!sentidoPermitido(color, sentido)) {
             valido = false;
-            
+
         } else if (pasos <= 0) {
             valido = false;
-            
+
         } else if (!posicionValida(fila, columna)) {
             valido = false;
         } else if (!matriz[fila][columna].equalsIgnoreCase(color)) {
@@ -140,18 +140,18 @@ public class Tablero {
             moverFicha(fila, columna, filaDestino, colDestino, color);
         }
         return valido;
-        
+
     }
-    
+
     private boolean posicionValida(int fila, int columna) {
         boolean valida = true;
         if (fila < 0 || fila >= filas || columna >= columnas || columna < 0) {
             valida = false;
         }
-        
+
         return valida;
     }
-    
+
     private boolean sentidoPermitido(String color, String sentido) {
         boolean permitido = false;
         if (color.equalsIgnoreCase("B")) {
@@ -169,13 +169,13 @@ public class Tablero {
                     || sentido.equalsIgnoreCase("E")
                     || sentido.equalsIgnoreCase("O")) {
                 permitido = true;
-                
+
             }
         }
         return permitido;
-        
+
     }
-    
+
     private int cambioFila(String sentido) {
         int cambio = 0;
         if (sentido.equalsIgnoreCase("N")
@@ -189,7 +189,7 @@ public class Tablero {
         }
         return cambio;
     }
-    
+
     private int cambioColumna(String sentido) {
         int cambio = 0;
         if (sentido.equalsIgnoreCase("E")
@@ -200,22 +200,22 @@ public class Tablero {
                 || sentido.equalsIgnoreCase("NO")
                 || sentido.equalsIgnoreCase("SO")) {
             cambio = -1;
-            
+
         }
         return cambio;
-        
+
     }
-    
+
     private int filaDestino(int fila, String sentido, int pasos) {
         int filaDestino = fila + cambioFila(sentido) * pasos;
         return filaDestino;
     }
-    
+
     private int columnaDestino(int columna, String sentido, int pasos) {
         int columnaDestino = columna + cambioColumna(sentido) * pasos;
         return columnaDestino;
     }
-    
+
     private boolean caminoLibre(int fila, int columna, String sentido, int pasos) {
         boolean libre = true;
         int cambioFila = cambioFila(sentido);
@@ -229,10 +229,10 @@ public class Tablero {
                 libre = false;
             }
         }
-        
+
         return libre;
     }
-    
+
     private boolean destinoValido(int filaDestino, int colDestino, String color) {
         boolean valido = true;
         if (!posicionValida(filaDestino, colDestino)) {
@@ -242,12 +242,12 @@ public class Tablero {
         }
         return valido;
     }
-    
+
     private void moverFicha(int fila, int columna, int filaDestino, int columnaDestino, String color) {
         matriz[fila][columna] = "V";
         matriz[filaDestino][columnaDestino] = color.toUpperCase();
     }
-    
+
     public boolean validarMovimientoEnGrupo(String color, String forma, String sentido, int fila, int columna, int tamanio, int pasos) {
         boolean valido = true;
         if (!color.equalsIgnoreCase("B") && !color.equalsIgnoreCase("N")) {
@@ -256,14 +256,23 @@ public class Tablero {
             valido = false;
         } else if (!sentidoLinealValido(sentido)) {
             valido = false;
-        }else if(!sentidoPorColorValido(color, sentido)){
+        } else if (!sentidoPorColorValido(color, sentido)) {
             valido = false;
-        }else if(!sentidoValidoConForma(forma, sentido)){
+        } else if (!sentidoValidoConForma(forma, sentido)) {
             valido = false;
-        }else if(pasos<=0){
+        } else if (pasos <= 0) {
+            valido = false;
+        } else if (tamanio <= 0) {
+            valido = false;
+        } else if (!grupoValido(color, forma, fila, columna, tamanio)) {
+            valido = false;
+        } else if (!destinoGrupoValido(forma, fila, columna, tamanio, sentido, pasos)) {
             valido = false;
         }
-        
+        if (valido) {
+            moverGrupo(color, forma, fila, columna, tamanio, sentido, pasos);
+        }
+
         return valido;
     }
 
@@ -273,7 +282,7 @@ public class Tablero {
             valido = true;
         }
         return valido;
-        
+
     }
 
     private boolean sentidoLinealValido(String sentido) {
@@ -285,7 +294,7 @@ public class Tablero {
             valido = true;
         }
         return valido;
-        
+
     }
 
     private boolean sentidoPorColorValido(String color, String sentido) {
@@ -295,36 +304,113 @@ public class Tablero {
                     || sentido.equalsIgnoreCase("E")
                     || sentido.equalsIgnoreCase("O")) {
                 permitido = true;
-                
+
             }
-        }else if(color.equalsIgnoreCase("N")){
-            if(sentido.equalsIgnoreCase("S")
+        } else if (color.equalsIgnoreCase("N")) {
+            if (sentido.equalsIgnoreCase("S")
                     || sentido.equalsIgnoreCase("E")
-                    || sentido.equalsIgnoreCase("O")){
+                    || sentido.equalsIgnoreCase("O")) {
                 permitido = true;
             }
         }
         return permitido;
     }
-    private boolean sentidoValidoConForma(String forma, String sentido){
+
+    private boolean sentidoValidoConForma(String forma, String sentido) {
         boolean permitido = false;
-        if(forma.equalsIgnoreCase("H")){
-            if(sentido.equalsIgnoreCase("N")
-                    || sentido.equalsIgnoreCase("S")){
+        if (forma.equalsIgnoreCase("H")) {
+            if (sentido.equalsIgnoreCase("N")
+                    || sentido.equalsIgnoreCase("S")) {
                 permitido = true;
-                
+
             }
-        }else if(forma.equalsIgnoreCase("V")){
-            if(sentido.equalsIgnoreCase("E")
-                    || sentido.equalsIgnoreCase("O")){
+        } else if (forma.equalsIgnoreCase("V")) {
+            if (sentido.equalsIgnoreCase("E")
+                    || sentido.equalsIgnoreCase("O")) {
                 permitido = true;
-                
+
             }
-        }return permitido;
+        }
+        return permitido;
     }
-    
+
+    private boolean grupoValido(String color, String forma, int fila, int columna, int tamanio) {
+        boolean valido = true;
+        for (int i = 0; i < tamanio && valido; i++) {
+            int filaActual = 0;
+            int columnaActual = 0;
+            if (forma.equalsIgnoreCase("H")) {
+                filaActual = fila;
+                columnaActual = columna + i;
+            } else if (forma.equalsIgnoreCase("V")) {
+                filaActual = fila + i;
+                columnaActual = columna;
+            }
+            if (!posicionValida(filaActual, columnaActual)) {
+                valido = false;
+            } else if (!matriz[filaActual][columnaActual].equalsIgnoreCase(color)) {
+                valido = false;
+            }
+        }
+        return valido;
+    }
+
+    private boolean destinoGrupoValido(String forma, int fila, int columna, int tamanio, String sentido, int pasos) {
+        boolean valido = true;
+        for (int i = 0; i < tamanio && valido; i++) {
+            int filaActual = 0;
+            int columnaActual = 0;
+            if (forma.equalsIgnoreCase("H")) {
+                filaActual = fila;
+                columnaActual = columna + i;
+            } else if (forma.equalsIgnoreCase("V")) {
+                filaActual = fila + i;
+                columnaActual = columna;
+            }
+            int filaFinal = filaDestino(filaActual, sentido, pasos);
+            int columnaFinal = columnaDestino(columnaActual, sentido, pasos);
+            if (!posicionValida(filaFinal, columnaFinal)) {
+                valido = false;
+            } else if (!matriz[filaFinal][columnaFinal].equalsIgnoreCase("V")) {
+                valido = false;
+            }
+        }
+        return valido;
+    }
+
+    private void moverGrupo(String color, String forma, int fila, int columna, int tamanio, String sentido, int pasos) {
+        for (int i = 0; i < tamanio; i++) {
+            int filaActual = 0;
+            int columnaActual = 0;
+            if (forma.equalsIgnoreCase("H")) {
+                filaActual = fila;
+                columnaActual = columna + i;
+            } else if (forma.equalsIgnoreCase("V")) {
+                filaActual = fila + i;
+                columnaActual = columna;
+            }
+            matriz[filaActual][columnaActual] = "V";
+
+        }
+        for (int i = 0; i < tamanio; i++) {
+            int filaActual = 0;
+            int columnaActual = 0;
+            if (forma.equalsIgnoreCase("H")) {
+                filaActual = fila;
+                columnaActual = columna + i;
+            } else if (forma.equalsIgnoreCase("V")) {
+                filaActual = fila + i;
+                columnaActual = columna;
+            }
+            int filaFinal = filaDestino(filaActual, sentido, pasos);
+            int columnaFinal = columnaDestino(columnaActual, sentido, pasos);
+            matriz[filaFinal][columnaFinal] = color.toUpperCase();
+        }
+
+    }
+
     public boolean verificarConexion(String color) {
         return false;
     }
-    
+
 }

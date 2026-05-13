@@ -200,8 +200,7 @@ public class Sistema {
                 parametros = "Color: " + color;
                 resultado = "Cantidad de fichas " + color + ": " + cantidad;
 
-            }
-            if (caso == 2) {
+            } else if (caso == 2) {
                 String color = "";
                 String sentido = "";
                 int fila = 0;
@@ -265,6 +264,88 @@ public class Sistema {
                 matrizResultado = tablero.copiarMatriz();
                 parametros = "Color: " + color + ", Sentido: " + sentido + ", fila: " + fila
                         + ", columna: " + columna + ", pasos: " + pasos;
+                resultado = "Resultado: " + " " + ok;
+
+            } else if (caso == 3) {
+                String color = "";
+                String sentido = "";
+                String forma = "";
+                int fila = 0;
+                int columna = 0;
+                int tamanio = 0;
+                int pasos = 0;
+                while (!color.equalsIgnoreCase("B") && !color.equalsIgnoreCase("N")) {
+                    System.out.println("Elija un color entre B o N");
+                    color = in.nextLine();
+                }
+                while (!forma.equalsIgnoreCase("H") && !forma.equalsIgnoreCase("V")) {
+                    System.out.println("Elija forma entre H o V");
+                    forma = in.nextLine();
+                }
+
+                while (!sentido.equalsIgnoreCase("N")
+                        && !sentido.equalsIgnoreCase("S")
+                        && !sentido.equalsIgnoreCase("E")
+                        && !sentido.equalsIgnoreCase("O")) {
+
+                    System.out.println("Elija un sentido");
+                    System.out.println("Opciones: N - S - E - O");
+                    sentido = in.nextLine();
+                }
+                boolean filaValida = false;
+                while (!filaValida) {
+                    try {
+                        System.out.println("Ingrese fila: ");
+                        fila = in.nextInt();
+                        in.nextLine();
+                        filaValida = true;
+                    } catch (InputMismatchException e) {
+                        System.out.println("La fila debe ser un numero");
+                        in.nextLine();
+                    }
+                }
+                boolean colValida = false;
+                while (!colValida) {
+                    try {
+                        System.out.println("Ingrese columna: ");
+                        columna = in.nextInt();
+                        in.nextLine();
+                        colValida = true;
+                    } catch (InputMismatchException e) {
+                        System.out.println("La columna debe ser un numero");
+                        in.nextLine();
+                    }
+                }
+                boolean tamanioValido = false;
+                while (!tamanioValido) {
+                    try {
+                        System.out.println("Ingrese tamanio: ");
+                        tamanio = in.nextInt();
+                        in.nextLine();
+                        tamanioValido = true;
+                    } catch (InputMismatchException e) {
+                        System.out.println("Tamaño debe ser un número.");
+                        in.nextLine();
+                    }
+                }
+                boolean pasosValidos = false;
+                while (!pasosValidos) {
+                    try {
+                        System.out.println("Ingrese cantidad de pasos: ");
+                        pasos = in.nextInt();
+                        in.nextLine();
+                        pasosValidos = true;
+                    } catch (InputMismatchException e) {
+                        System.out.println("Los pasos deben ser un número");
+                        in.nextLine();
+                    }
+                }
+
+                matrizOriginal = tablero.copiarMatriz();
+                boolean ok = tablero.validarMovimientoEnGrupo(color, forma, sentido, fila, columna, tamanio, pasos);
+                matrizResultado = tablero.copiarMatriz();
+                parametros = "Color: " + color + ", Forma: " + forma + ", Sentido: " + sentido + ", Fila: " + fila
+                        + ", Columna: " + columna + ", Tamaño: " + tamanio + ", Pasos: " + pasos;
                 resultado = "Resultado: " + " " + ok;
 
             }
