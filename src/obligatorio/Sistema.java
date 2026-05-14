@@ -348,6 +348,24 @@ public class Sistema {
                         + ", Columna: " + columna + ", Tamaño: " + tamanio + ", Pasos: " + pasos;
                 resultado = "Resultado: " + " " + ok;
 
+            } else if (caso == 4) {
+                matrizOriginal = tablero.copiarMatriz();
+                String textoTablero = tablero.prepararTablero();
+                matrizResultado = tablero.copiarMatriz();
+                parametros = "Sin parámetros";
+                resultado = textoTablero;
+            } else if (caso == 5) {
+                String color = "";
+                while (!color.equalsIgnoreCase("B")
+                        && !color.equalsIgnoreCase("N")) {
+                    System.out.println("Ingrese color entre B o N");
+                    color = in.nextLine();
+                }
+                matrizOriginal = tablero.copiarMatriz();
+                boolean ok = tablero.verificarConexion(color);
+                matrizResultado = tablero.copiarMatriz();
+                parametros = "Color: " + color;
+                resultado = "Resultado: " + ok;
             }
             System.out.println("Ingrese un comentario para registrar Testeo");
             comentario = in.nextLine();

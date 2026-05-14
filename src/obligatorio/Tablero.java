@@ -410,7 +410,51 @@ public class Tablero {
     }
 
     public boolean verificarConexion(String color) {
-        return false;
+        boolean conectado = false;
+        int filaInicio = -1;
+        int columnaInicio = -1;
+        int totalFichas = contarFichas(color);
+
+        if (totalFichas == 0) {
+            return false;
+        }
+        for (int i = 0; i < matriz.length && filaInicio == -1; i++) {
+            for (int j = 0; j < matriz[0].length && filaInicio == -1; j++) {
+                if (matriz[i][j].equalsIgnoreCase(color)) {
+                    filaInicio = i;
+                    columnaInicio = j;
+                }
+
+            }
+        }
+        boolean[][] visitadas = new boolean[filas][columnas];
+        int conectadas = contarConectadas(color, filaInicio, columnaInicio, visitadas);
+
+        if (conectadas == totalFichas) {
+            conectado = true;
+        }
+        return conectado;
+    }
+
+    private int contarConectadas(String color, int fila, int columna, boolean[][] visitadas) {
+        int contador = 0;
+        if (posicionValida(fila, columna)
+                && !visitadas[fila][columna]
+                && matriz[fila][columna].equalsIgnoreCase(color)) {
+            visitadas[fila][columna] = true;
+            contador = 1;
+            for (int i = fila - 1; i <= fila + 1; i++) {
+                for (int j = columna - 1; j <= columna + 1; j++) {
+                    if (!(i == fila && j == columna)) {
+                        contador
+                                += contarConectadas(color, i, j, visitadas);
+                    }
+                }
+            }
+
+        }
+
+        return contador;
     }
 
 }
