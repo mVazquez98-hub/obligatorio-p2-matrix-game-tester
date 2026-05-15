@@ -3,6 +3,7 @@ package obligatorio;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
+import java.util.Collections;
 
 public class Sistema {
 
@@ -433,11 +434,118 @@ public class Sistema {
     }
 
     public void consultarTesters() {
+        System.out.println("=== Consulta de Testers ===");
+        if (testers.isEmpty()) {
+            System.out.println("No hay testers registrados");
+        } else {
+            Tester testerSeleccionado = elegirTester();
+            System.out.println("Tester seleccionado: " + testerSeleccionado.getNombre());
+            ArrayList<Testeo> testeosTester = testerSeleccionado.getTesteos();
+            if (testeosTester.isEmpty()) {
+                System.out.println("El tester no tiene testeos registrados");
+            } else {
+                Collections.sort(testeosTester);
+                for (int i = 0; i < testeosTester.size(); i++) {
+                    Testeo testeoTester = testeosTester.get(i);
+                    System.out.println(testeoTester.getNumero() + " - Caso " + testeoTester.getCaso());
+
+                }
+                Testeo testeoSeleccionado = null;
+                int numeroBuscado = 0;
+                while (testeoSeleccionado == null) {
+                    try {
+                        System.out.println("Ingrese número de testeo:");
+                        numeroBuscado = in.nextInt();
+                        in.nextLine();
+                        for (int i = 0; i < testeosTester.size() && testeoSeleccionado == null; i++) {
+                            if (testeosTester.get(i).getNumero() == numeroBuscado) {
+                                testeoSeleccionado = testeosTester.get(i);
+                            }
+
+                        }
+                        if (testeoSeleccionado == null) {
+                            System.out.println("No existe un test con ese número para el tester");
+                        }
+                    } catch (InputMismatchException e) {
+                        System.out.println("Debe ingresar un número válido");
+                        in.nextLine();
+                    }
+
+                }
+                System.out.println("=== Datos del testeo ===");
+                System.out.println(testeoSeleccionado);
+
+                System.out.println("Matriz original:");
+                System.out.println(prepararMatrizConsulta(testeoSeleccionado.getMatrizOriginal()));
+
+                if (huboModificaciones(testeoSeleccionado.getMatrizOriginal(), testeoSeleccionado.getMatrizResultante())) {
+                    System.out.println("Matriz resultante:");
+                    System.out.println(prepararMatrizConsulta(testeoSeleccionado.getMatrizResultante()));
+                } else {
+                    System.out.println("No hubo modificaciones en la matriz.");
+                }
+
+            }
+
+        }
 
     }
 
     public void mostrarEstadisticas() {
+        System.out.println("=== Mostrar Estadísticas ===");
+        if (testers.isEmpty()) {
+            System.out.println("No hay testers registrados");
+        } else {
+            String opcion = "";
+            while (!opcion.equalsIgnoreCase("A") && !opcion.equalsIgnoreCase("B")) {
+                System.out.println("Elija Opcion entre A y B");
+                System.out.println("Opcion A - Mostrar Testers con mas testeos");
+                System.out.println("Opcion B - Mostrar Testers sin testeos");
+                opcion = in.nextLine();
+            }
+            if (opcion.equalsIgnoreCase("A")) {
+                ArrayList<Tester> listaTesteosMax = obtenerTestersConMasTesteos();
+                mostrarListaTesters(listaTesteosMax);
+            } else if (opcion.equalsIgnoreCase("B")) {
+                ArrayList<Tester> listaSinTesteos = obtenerTestersSinTesteos();
+                mostrarListaTesters(listaSinTesteos);
+            }
 
+        }
+
+    }
+
+    public ArrayList<Tester> obtenerTestersConMasTesteos() {
+        int maximo = -1;
+        ArrayList<Tester> listaMaximos = new ArrayList<Tester>();
+        for (int i = 0; i < testers.size(); i++) {
+            Tester testerElegido = testers.get(i);
+            int cantidadTesteos = testerElegido.getTesteos().size();
+            if (cantidadTesteos > maximo) {
+                maximo = cantidadTesteos;
+                listaMaximos.clear();
+                listaMaximos.add(testerElegido);
+
+            } else if (cantidadTesteos == maximo) {
+                listaMaximos.add(testerElegido);
+            }
+
+        }
+        return listaMaximos;
+    }
+
+    public ArrayList<Tester> obtenerTestersSinTesteos() {
+        ArrayList<Tester> listaSinTesteos = new ArrayList<Tester>();
+
+        for (int i = 0; i < testers.size(); i++) {
+            Tester testerElegido = testers.get(i);
+            int cantidadTesteos = testerElegido.getTesteos().size();
+            if (cantidadTesteos == 0) {
+
+                listaSinTesteos.add(testerElegido);
+            }
+        }
+        return listaSinTesteos;
     }
 
     private boolean existeTester(String nombre) {
@@ -450,6 +558,43 @@ public class Sistema {
         }
 
         return existe;
+    }
+
+    private void mostrarListaTesters(ArrayList<Tester> lista) {
+        if (lista.isEmpty()) {
+            System.out.println("No hay Testers para mostrar.");
+        } else {
+            for (int i = 0; i < lista.size(); i++) {
+                System.out.println(lista.get(i));
+            }
+        }
+
+    }
+
+    private String prepararMatrizConsulta(String[][] matriz) {
+        String tableroConsulta = "";
+        for (int i = 0; i < matriz.length; i++) {
+            tableroConsulta += "+---+---+---+---+---+---+---+---+---+---+\n";
+            for (int j = 0; j < matriz[0].length; j++) {
+                tableroConsulta += "| " + matriz[i][j] + " ";
+            }
+            tableroConsulta += "|\n";
+        }
+        tableroConsulta += "+---+---+---+---+---+---+---+---+---+---+\n";
+
+        return tableroConsulta;
+    }
+
+    private boolean huboModificaciones(String[][] original, String[][] resultado) {
+        boolean modificada = false;
+        for (int i = 0; i < original.length && !modificada; i++) {
+            for (int j = 0; j < original[0].length && !modificada; j++) {
+                if (!original[i][j].equalsIgnoreCase(resultado[i][j])) {
+                    modificada = true;
+                }
+            }
+        }
+        return modificada;
     }
 
 }

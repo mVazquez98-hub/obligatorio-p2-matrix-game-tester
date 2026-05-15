@@ -47,5 +47,10 @@ public class Tester {
     public void agregarTesteo(Testeo unTesteo) {
         testeos.add(unTesteo);
     }
+    @Override
+    public String toString(){
+        return "Nombre: " + nombre + "\nEdad: " + edad + "\nExperiencia: " + aniosExperiencia
+                + "\nTesteos: " + testeos.size();
+    }
 
 }

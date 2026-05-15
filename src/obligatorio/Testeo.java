@@ -1,6 +1,6 @@
 package obligatorio;
 
-public class Testeo {
+public class Testeo implements Comparable<Testeo> {
 
     private int numero;
     private int caso;
@@ -56,6 +56,15 @@ public class Testeo {
 
     public void setComentario(String comentario) {
         this.comentario = comentario;
+    }
+    @Override
+    public int compareTo(Testeo otro){
+        return this.numero - otro.numero;
+        
+    }
+    @Override
+    public String toString(){
+        return "Testeo: " + numero + "\nCaso: " + caso + "\nParámetros: " + parametros + "\nResultado: " + resultado;
     }
 
 }
