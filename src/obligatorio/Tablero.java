@@ -446,8 +446,7 @@ public class Tablero {
             for (int i = fila - 1; i <= fila + 1; i++) {
                 for (int j = columna - 1; j <= columna + 1; j++) {
                     if (!(i == fila && j == columna)) {
-                        contador
-                                += contarConectadas(color, i, j, visitadas);
+                        contador += contarConectadas(color, i, j, visitadas);
                     }
                 }
             }
