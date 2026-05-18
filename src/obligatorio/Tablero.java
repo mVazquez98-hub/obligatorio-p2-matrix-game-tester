@@ -11,10 +11,6 @@ public class Tablero {
         cargarMatrizPorDefecto();
     }
 
-    public String[][] getMatriz() {
-        return matriz;
-    }
-
     public void cargarMatrizPorDefecto() {
         String[] filasPorDefecto = {
             "VVNNVVNNVV",
@@ -266,6 +262,9 @@ public class Tablero {
             valido = false;
         } else if (!grupoValido(color, forma, fila, columna, tamanio)) {
             valido = false;
+        } else if (!caminoGrupoLibre(forma, fila, columna, tamanio, sentido, pasos)) {
+            valido = false;
+
         } else if (!destinoGrupoValido(forma, fila, columna, tamanio, sentido, pasos)) {
             valido = false;
         }
@@ -353,6 +352,31 @@ public class Tablero {
             }
         }
         return valido;
+    }
+
+    private boolean caminoGrupoLibre(String forma, int fila, int columna, int tamanio, String sentido, int pasos) {
+        boolean libre = true;
+        for (int i = 0; i < tamanio && libre; i++) {
+            int filaActual = 0;
+            int columnaActual = 0;
+            if (forma.equalsIgnoreCase("H")) {
+                filaActual = fila;
+                columnaActual = columna + i;
+            } else if (forma.equalsIgnoreCase("V")) {
+                filaActual = fila + i;
+                columnaActual = columna;
+            }
+            for (int j = 1; j < pasos && libre; j++) {
+                int filaIntermedia = filaDestino(filaActual, sentido, j);
+                int columnaIntermedia = columnaDestino(columnaActual,sentido,j);
+                if(!posicionValida(filaIntermedia, columnaIntermedia)){
+                    libre = false;
+                }else if(!matriz[filaIntermedia][columnaIntermedia].equalsIgnoreCase("V")){
+                    libre = false;
+                    
+                }
+            }
+        }return libre;
     }
 
     private boolean destinoGrupoValido(String forma, int fila, int columna, int tamanio, String sentido, int pasos) {

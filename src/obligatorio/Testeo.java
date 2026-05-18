@@ -64,7 +64,7 @@ public class Testeo implements Comparable<Testeo> {
     }
     @Override
     public String toString(){
-        return "Testeo: " + numero + "\nCaso: " + caso + "\nParámetros: " + parametros + "\nResultado: " + resultado;
+        return "Testeo: " + numero + "\nCaso: " + caso + "\nParámetros: " + parametros +"\nComentario: " + comentario + "\nResultado: " + resultado;
     }
 
 }
