@@ -1,8 +1,11 @@
+/*
+*Nombre: Martín Vázquez - Número de estudiante: 180210
+*/
 package obligatorio;
 
 import java.util.ArrayList;
 
-public class Tester {
+public class Tester implements Comparable<Tester>{
 
     private String nombre;
     private int edad;
@@ -49,8 +52,12 @@ public class Tester {
     }
     @Override
     public String toString(){
-        return "Nombre: " + nombre + "\nEdad: " + edad + "\nExperiencia: " + aniosExperiencia
-                + "\nTesteos: " + testeos.size();
+        return "Nombre: " + nombre + " - Edad: " + edad + " - Experiencia: " + aniosExperiencia
+                + " - Testeos: " + testeos.size();
+    }
+    @Override
+    public int compareTo(Tester otro){
+        return this.nombre.compareToIgnoreCase(otro.nombre);
     }
 
 }

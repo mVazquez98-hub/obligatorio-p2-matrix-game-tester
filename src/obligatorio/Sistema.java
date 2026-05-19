@@ -1,3 +1,6 @@
+/*
+*Nombre: Martín Vázquez - Número de estudiante: 180210
+ */
 package obligatorio;
 
 import java.util.ArrayList;
@@ -119,11 +122,10 @@ public class Sistema {
             }
 
         }
-        System.out.println("Nombre: " + nombre + " - edad: " + edad + " - Años de experiencia: " + aniosExperiencia);
         Tester nuevoTester = new Tester(nombre, edad, aniosExperiencia);
         testers.add(nuevoTester);
         System.out.println("Tester registrado correctamente.");
-
+        System.out.println(nuevoTester.toString());
     }
 
     public void registrarMatrizActual() {
@@ -131,27 +133,43 @@ public class Sistema {
         System.out.println("=== Registrar matriz actual ===");
         System.out.println("Matriz actual:");
         System.out.println(tablero.prepararTablero());
-        System.out.println("Si desea continuar con la matriz actual, presione S");
-        System.out.println("De lo contrario, presione N");
-        String respuesta = in.nextLine();
+        String respuesta = "";
+        while (!respuesta.equalsIgnoreCase("S")
+                && !respuesta.equalsIgnoreCase("N")) {
+            System.out.println("Si desea continuar con la matriz actual, presione S");
+            System.out.println("De lo contrario, presione N");
+            respuesta = in.nextLine();
+            if (!respuesta.equalsIgnoreCase("S")
+                    && !respuesta.equalsIgnoreCase("N")) {
+                System.out.println("Opción inválida");
+            }
+        }
         if (respuesta.equalsIgnoreCase("S")) {
             System.out.println("Matriz actual:");
             System.out.println(tablero.prepararTablero());
-        } else if (respuesta.equalsIgnoreCase("N")) {
-            System.out.println("A - Cargar matriz por defecto");
-            System.out.println("B - Cargar matriz manualmente");
-            System.out.print("Ingrese opción: ");
-            String opcion = in.nextLine();
+        } else {
+            String opcion = "";
+            while (!opcion.equalsIgnoreCase("A")
+                    && !opcion.equalsIgnoreCase("B")) {
+                System.out.println("A - Cargar matriz por defecto");
+                System.out.println("B - Cargar matriz manualmente");
+                System.out.print("Ingrese opción: ");
+                opcion = in.nextLine();
+                if (!opcion.equalsIgnoreCase("A")
+                        && !opcion.equalsIgnoreCase("B")) {
+                    System.out.println("Opción inválida");
+                }
+            }
             if (opcion.equalsIgnoreCase("A")) {
                 tablero.cargarMatrizPorDefecto();
-                System.out.println("Matriz por defecto: ");
+                System.out.println("Matriz por defecto:");
                 System.out.println(tablero.prepararTablero());
-            } else if (opcion.equalsIgnoreCase("B")) {
+            } else {
                 boolean cargada = false;
                 while (!cargada) {
                     String[] filasIngresadas = new String[8];
                     for (int i = 0; i < filasIngresadas.length; i++) {
-                        System.out.print("Ingrese fila " + (i + 1) + ": ");
+                        System.out.print("Ingrese fila " + (i + 1) + " (Opciones: B-N-V): ");
                         filasIngresadas[i] = in.nextLine();
                     }
                     cargada = tablero.cargarMatriz(filasIngresadas);
@@ -159,17 +177,11 @@ public class Sistema {
                         System.out.println("La matriz ingresada no es válida.");
                         System.out.println("Ingrese la matriz nuevamente.");
                     }
-
                 }
                 System.out.println("Matriz cargada correctamente.");
                 System.out.println(tablero.prepararTablero());
-
-            } else {
-                System.out.println("Opción inválida");
             }
-
         }
-
     }
 
     public void registrarTesteo() {
@@ -192,6 +204,8 @@ public class Sistema {
             if (caso == 1) {
                 String color = pedirColor();
                 matrizOriginal = tablero.copiarMatriz();
+                System.out.println("Matriz previa al testeo:");
+                System.out.println(prepararMatrizConsulta(matrizOriginal));
                 int cantidad = tablero.contarFichas(color);
                 matrizResultado = tablero.copiarMatriz();
                 parametros = "Color: " + color;
@@ -199,18 +213,24 @@ public class Sistema {
 
             } else if (caso == 2) {
                 String color = pedirColor();
+                System.out.println("Matriz previa al testeo:");
+                matrizOriginal = tablero.copiarMatriz();
+                System.out.println(prepararMatrizConsulta(matrizOriginal));
                 String sentido = pedirSentidoIndividual();
                 int fila = pedirEntero("Ingrese fila (de 0 a 7): ", "La fila debe ser un número");
                 int columna = pedirEntero("Ingrese columna (de 0 a 9): ", "La columna debe ser un número");
                 int pasos = pedirEntero("Ingrese cantidad de pasos: ", "Los pasos deben ser un número");
-                matrizOriginal = tablero.copiarMatriz();
                 boolean ok = tablero.validarMovimientoIndividual(color, sentido, fila, columna, pasos);
                 matrizResultado = tablero.copiarMatriz();
+                System.out.println("Matriz posterior al testeo:");
+                System.out.println(prepararMatrizConsulta(matrizResultado));
                 parametros = "Color: " + color + ", Sentido: " + sentido + ", fila: " + fila
                         + ", columna: " + columna + ", pasos: " + pasos;
                 resultado = "Resultado: " + " " + ok;
-
             } else if (caso == 3) {
+                matrizOriginal = tablero.copiarMatriz();
+                System.out.println("Matriz previa al testeo:");
+                System.out.println(prepararMatrizConsulta(matrizOriginal));
                 String color = pedirColor();
                 String forma = pedirForma();
                 String sentido = pedirSentidoGrupo();
@@ -218,9 +238,10 @@ public class Sistema {
                 int columna = pedirEntero("Ingrese columna (de 0 a 9): ", "La columna debe ser un número");
                 int tamanio = pedirEntero("Ingrese tamaño: ", "Tamaño debe ser un número");
                 int pasos = pedirEntero("Ingrese cantidad de pasos: ", "Los pasos deben ser un número");
-                matrizOriginal = tablero.copiarMatriz();
                 boolean ok = tablero.validarMovimientoEnGrupo(color, forma, sentido, fila, columna, tamanio, pasos);
                 matrizResultado = tablero.copiarMatriz();
+                System.out.println("Matriz resultado:");
+                System.out.println(prepararMatrizConsulta(matrizResultado));
                 parametros = "Color: " + color + ", Forma: " + forma + ", Sentido: " + sentido + ", Fila: " + fila
                         + ", Columna: " + columna + ", Tamaño: " + tamanio + ", Pasos: " + pasos;
                 resultado = "Resultado: " + " " + ok;
@@ -229,11 +250,14 @@ public class Sistema {
                 matrizOriginal = tablero.copiarMatriz();
                 String textoTablero = tablero.prepararTablero();
                 matrizResultado = tablero.copiarMatriz();
+                System.out.println(textoTablero);
                 parametros = "Sin parámetros";
-                resultado = textoTablero;
+                resultado = "Tablero mostrado correctamente";
             } else if (caso == 5) {
                 String color = pedirColor();
                 matrizOriginal = tablero.copiarMatriz();
+                System.out.println("Matriz previa al testeo:");
+                System.out.println(prepararMatrizConsulta(matrizOriginal));
                 boolean ok = tablero.verificarConexion(color);
                 matrizResultado = tablero.copiarMatriz();
                 parametros = "Color: " + color;
@@ -377,6 +401,7 @@ public class Sistema {
         if (testers.isEmpty()) {
             System.out.println("No hay testers registrados");
         } else {
+            Collections.sort(testers);
             Tester testerSeleccionado = elegirTester();
             System.out.println("Tester seleccionado: " + testerSeleccionado.getNombre());
             ArrayList<Testeo> testeosTester = testerSeleccionado.getTesteos();

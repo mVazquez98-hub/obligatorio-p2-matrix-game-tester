@@ -1,3 +1,6 @@
+/*
+*Nombre: Martín Vázquez - Número de estudiante: 180210
+*/
 package obligatorio;
 
 public class Tablero {
@@ -459,25 +462,48 @@ public class Tablero {
         }
         return conectado;
     }
-
-    private int contarConectadas(String color, int fila, int columna, boolean[][] visitadas) {
+    
+           
+    private int contarConectadas(String color, int filaInicio, int columnaInicio, boolean[][] visitadas) {
         int contador = 0;
-        if (posicionValida(fila, columna)
-                && !visitadas[fila][columna]
-                && matriz[fila][columna].equalsIgnoreCase(color)) {
-            visitadas[fila][columna] = true;
-            contador = 1;
-            for (int i = fila - 1; i <= fila + 1; i++) {
-                for (int j = columna - 1; j <= columna + 1; j++) {
-                    if (!(i == fila && j == columna)) {
-                        contador += contarConectadas(color, i, j, visitadas);
+
+    int[] filasPendientes = new int[filas * columnas];
+    int[] columnasPendientes = new int[filas * columnas];
+
+    int posicionARevisar = 0;
+    int proximaPosicionLibre = 0;
+
+    filasPendientes[proximaPosicionLibre] = filaInicio;
+    columnasPendientes[proximaPosicionLibre] = columnaInicio;
+    proximaPosicionLibre++;
+
+    visitadas[filaInicio][columnaInicio] = true;
+
+    while (posicionARevisar < proximaPosicionLibre) {
+        int filaActual = filasPendientes[posicionARevisar];
+        int columnaActual = columnasPendientes[posicionARevisar];
+        posicionARevisar++;
+        contador++;
+
+        for (int i = filaActual - 1; i <= filaActual + 1; i++) {
+            for (int j = columnaActual - 1; j <= columnaActual + 1; j++) {
+                if (!(i == filaActual && j == columnaActual)) {
+                    if (posicionValida(i, j)
+                            && !visitadas[i][j]
+                            && matriz[i][j].equalsIgnoreCase(color)) {
+
+                        visitadas[i][j] = true;
+
+                        filasPendientes[proximaPosicionLibre] = i;
+                        columnasPendientes[proximaPosicionLibre] = j;
+                        proximaPosicionLibre++;
                     }
                 }
             }
-
         }
-
-        return contador;
     }
+
+    return contador;
+}
 
 }

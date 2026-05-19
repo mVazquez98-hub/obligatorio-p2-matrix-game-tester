@@ -1,3 +1,6 @@
+/*
+*Nombre: Martín Vázquez - Número de estudiante: 180210
+*/
 package obligatorio;
 
 public class Testeo implements Comparable<Testeo> {
